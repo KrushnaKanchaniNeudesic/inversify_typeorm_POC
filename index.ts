@@ -1,10 +1,12 @@
+
 import 'reflect-metadata';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { Container } from 'inversify';
 import './src/controller/home';
 import './src/controller/user';
 import { bindings } from './inversify.config';
-import * as bodyParser from 'body-parser';
+import { PipeLineSetUp } from './src/middleware/pipeline-setup';
+
 // // load everything needed to the Container
 // let container = new Container();
 // container.bind<UserService>(TYPES.UserService).to(UserService);
@@ -31,18 +33,14 @@ import * as bodyParser from 'body-parser';
   await container.loadAsync(bindings);
   const server = new InversifyExpressServer(container);
 
-  server.setConfig((theApp) => {
-    theApp.use(bodyParser.urlencoded({
-      extended: true
-    }));
-    theApp.use(bodyParser.json());
-  });
+  server.setConfig(PipeLineSetUp.configFn)
+    .setErrorConfig(PipeLineSetUp.HandleError);
 
 
   const app = server.build();
 
   app.listen(port, () => {
-      console.log(`Server running at http://127.0.0.1:${port}/`)
+    console.log(`Server running at http://127.0.0.1:${port}/`)
   });
 
 })();

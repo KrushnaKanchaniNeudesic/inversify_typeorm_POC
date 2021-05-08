@@ -27,6 +27,6 @@
     "inversify-express-utils": "^6.3.2",
     "mongodb": "^3.5.6",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.24"
+    "typeorm": "^0.2.25"
   }
 }
